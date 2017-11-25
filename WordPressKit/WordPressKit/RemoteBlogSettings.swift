@@ -119,7 +119,15 @@ public class RemoteBlogSettings: NSObject {
     ///
     @objc public var pingbackOutboundEnabled: NSNumber?
 
+    // MARK: - Traffic
 
+    /// Indicates if the blog supports AMP
+    ///
+    @objc public var isAMPSupported: NSNumber?
+
+    /// Indicates if the blog has AMP enabled
+    ///
+    @objc public var isAMPEnabled: NSNumber?
 
     // MARK: - Related Posts
 

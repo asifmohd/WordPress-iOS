@@ -133,6 +133,15 @@ open class BlogSettings: NSManagedObject {
     @NSManaged var pingbackOutboundEnabled: Bool
 
 
+    // MARK: - Traffic
+
+    /// Indicates if the blog supports AMP
+    ///
+    @NSManaged var isAMPSupported: Bool
+
+    /// Indicates if the blog has AMP enabled
+    ///
+    @NSManaged var isAMPEnabled: Bool
 
     // MARK: - Related Posts
 
