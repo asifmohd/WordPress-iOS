@@ -61,6 +61,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
+    SiteSettingsSectionTraffic,
     SiteSettingsSectionJetpackSettings,
     SiteSettingsSectionAdvanced,
 };
@@ -85,6 +86,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
 #pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
+#pragma mark - Traffic Section
+@property (nonatomic, strong) SettingTableViewCell *trafficSettingsCell;
 #pragma mark - Jetpack Settings Section
 @property (nonatomic, strong) SettingTableViewCell *jetpackSecurityCell;
 @property (nonatomic, strong) SettingTableViewCell *jetpackConnectionCell;
@@ -167,6 +170,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
     }
 
+    if (self.blog.settings.isAMPSupported) {
+        [sections addObject:@(SiteSettingsSectionTraffic)];
+    }
+
     if ([self.blog supports:BlogFeatureSiteManagement]) {
         [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
@@ -213,6 +220,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion:
+        {
+            return 1;
+        }
+        case SiteSettingsSectionTraffic:
         {
             return 1;
         }
@@ -320,6 +331,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                                                                  editable:YES
                                                           reuseIdentifier:nil];
     return _discussionSettingsCell;
+}
+
+- (SettingTableViewCell *)trafficSettingsCell
+{
+    if (_trafficSettingsCell) {
+        return _trafficSettingsCell;
+    }
+    _trafficSettingsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Traffic", @"Label for selecting the Blog Traffic Settings section")
+                                                              editable:YES
+                                                       reuseIdentifier:nil];
+    return _trafficSettingsCell;
 }
 
 - (SettingTableViewCell *)jetpackSecurityCell
@@ -568,6 +590,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionDiscussion:
             return self.discussionSettingsCell;
 
+        case SiteSettingsSectionTraffic:
+            return self.trafficSettingsCell;
+
         case SiteSettingsSectionJetpackSettings:
             return [self tableView:tableView cellForJetpackSettingsAtRow:indexPath.row];
 
@@ -686,6 +711,19 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     };
     
     [self.navigationController pushViewController:languageViewController animated:YES];
+}
+
+- (void)showTrafficSettingsForBlog:(Blog *)blog
+{
+    NSParameterAssert(blog);
+
+    __weak __typeof__(self) weakSelf = self;
+
+    TrafficSettingsViewController *trafficViewController = [[TrafficSettingsViewController alloc] initWithBlog:blog onChange:^(BOOL isAMPEnabled) {
+        weakSelf.blog.settings.isAMPEnabled = isAMPEnabled;
+        [weakSelf saveSettings];
+    }];
+    [self.navigationController pushViewController:trafficViewController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectInGeneralSectionRow:(NSInteger)row
@@ -917,6 +955,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsSectionDiscussion:
             [self showDiscussionSettingsForBlog:self.blog];
+            break;
+
+        case SiteSettingsSectionTraffic:
+            [self showTrafficSettingsForBlog:self.blog];
             break;
 
         case SiteSettingsSectionJetpackSettings:

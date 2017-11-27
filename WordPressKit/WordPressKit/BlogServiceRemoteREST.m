@@ -40,6 +40,8 @@ static NSString * const RemoteBlogRelatedPostsAllowedKey                    = @"
 static NSString * const RemoteBlogRelatedPostsEnabledKey                    = @"jetpack_relatedposts_enabled";
 static NSString * const RemoteBlogRelatedPostsShowHeadlineKey               = @"jetpack_relatedposts_show_headline";
 static NSString * const RemoteBlogRelatedPostsShowThumbnailsKey             = @"jetpack_relatedposts_show_thumbnails";
+static NSString * const RemoteBlogIsAMPSupported                            = @"amp_is_supported";
+static NSString * const RemoteBlogIsAMPEnabled                              = @"amp_is_enabled";
 
 static NSString * const RemoteBlogSharingButtonStyle                        = @"sharing_button_style";
 static NSString * const RemoteBlogSharingLabel                              = @"sharing_label";
@@ -359,6 +361,10 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     settings.pingbackOutboundEnabled = [rawSettings numberForKey:RemoteBlogCommentsPingbackOutboundKey];
     settings.pingbackInboundEnabled = [rawSettings numberForKey:RemoteBlogCommentsPingbackInboundKey];
 
+    // Traffic
+    settings.isAMPSupported = [rawSettings numberForKey:RemoteBlogIsAMPSupported];
+    settings.isAMPEnabled = [rawSettings numberForKey:RemoteBlogIsAMPEnabled];
+
     // Related Posts
     settings.relatedPostsAllowed = [rawSettings numberForKey:RemoteBlogRelatedPostsAllowedKey];
     settings.relatedPostsEnabled = [rawSettings numberForKey:RemoteBlogRelatedPostsEnabledKey];
@@ -418,6 +424,9 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     [parameters setValueIfNotNil:settings.relatedPostsEnabled forKey:RemoteBlogRelatedPostsEnabledKey];
     [parameters setValueIfNotNil:settings.relatedPostsShowHeadline forKey:RemoteBlogRelatedPostsShowHeadlineKey];
     [parameters setValueIfNotNil:settings.relatedPostsShowThumbnails forKey:RemoteBlogRelatedPostsShowThumbnailsKey];
+
+    // Traffic
+    [parameters setValue:settings.isAMPEnabled forKey:RemoteBlogIsAMPEnabled];
 
     // Sharing
     [parameters setValueIfNotNil:settings.sharingButtonStyle forKey:RemoteBlogSharingButtonStyle];

@@ -1002,6 +1002,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.pingbackInboundEnabled = [remoteSettings.pingbackInboundEnabled boolValue];
     settings.pingbackOutboundEnabled = [remoteSettings.pingbackOutboundEnabled boolValue];
 
+    // Traffic
+    settings.isAMPSupported = [remoteSettings.isAMPSupported boolValue];
+    settings.isAMPEnabled = [remoteSettings.isAMPEnabled boolValue];
+
     // Related Posts
     settings.relatedPostsAllowed = [remoteSettings.relatedPostsAllowed boolValue];
     settings.relatedPostsEnabled = [remoteSettings.relatedPostsEnabled boolValue];
@@ -1063,6 +1067,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     
     remoteSettings.pingbackInboundEnabled = @(settings.pingbackInboundEnabled);
     remoteSettings.pingbackOutboundEnabled = @(settings.pingbackOutboundEnabled);
+
+    // Traffic
+    remoteSettings.isAMPEnabled = @(settings.isAMPEnabled);
     
     // Related Posts
     remoteSettings.relatedPostsAllowed = @(settings.relatedPostsAllowed);
